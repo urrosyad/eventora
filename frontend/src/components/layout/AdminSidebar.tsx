@@ -56,9 +56,8 @@ export function AdminSidebar() {
         {/* Brand Header */}
         <div className="h-16 flex items-center px-6 border-b border-border">
           <Link to="/admin/dashboard" className="flex items-center space-x-2">
-            <span className="text-xl font-bold tracking-tight text-primary-blue">
-              Eventora <span className="text-xs font-semibold text-accent-blue px-1.5 py-0.5 bg-soft-blue rounded-md uppercase ml-1.5">Admin</span>
-            </span>
+            <img src="/eventoraLogo.png" alt="EVENTORA" className="h-6 w-auto object-contain" />
+            <span className="text-xs font-semibold text-accent-blue px-1.5 py-0.5 bg-soft-blue rounded-md uppercase ml-1.5">Admin</span>
           </Link>
         </div>
 

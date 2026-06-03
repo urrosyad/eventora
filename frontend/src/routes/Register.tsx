@@ -60,9 +60,9 @@ export function Register() {
 
       <div className="max-w-md w-full space-y-8 bg-white border border-border p-8 rounded-2xl shadow-xl relative z-10">
         {/* Brand */}
-        <div className="text-center">
-          <Link to="/" className="text-2xl font-bold tracking-tight text-primary-blue hover:opacity-90">
-            Eventora
+        <div className="text-center flex flex-col items-center justify-center">
+          <Link to="/" className="inline-flex items-center text-2xl font-bold tracking-tight text-primary-blue hover:opacity-90">
+            <img src="/eventoraLogo.png" alt="EVENTORA" className="h-8 w-auto object-contain" />
           </Link>
           <h2 className="mt-6 text-xl font-bold text-ink">Create a new account</h2>
           <p className="mt-1 text-sm text-muted-ink">

@@ -91,7 +91,7 @@ Gunakan kredensial berikut untuk menguji API di Swagger / Postman:
 | 3 | **Perusahaan** | `perusahaan@eventora.com` | `password123` | Telah melengkapi profil & tipe dukungan |
 
 ---
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL2F1dGgvbG9naW4iLCJpYXQiOjE3ODAwMjcyMDEsImV4cCI6MTc4MDExMzYwMSwibmJmIjoxNzgwMDI3MjAxLCJqdGkiOiIya2YzNGw1UjNvOTU2M3R0Iiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlIjoib3JnYW5pc2FzaSJ9.Ppp3j3mI5QJuuODaTqi3t9oyk7nfo9QOD1EqKLfFTg0
+
 
 ## 📂 Struktur Folder Architecture
 ```text

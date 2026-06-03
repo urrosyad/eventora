@@ -94,10 +94,28 @@ export function EventList() {
               </div>
 
               {/* Action buttons */}
-              <div className="pt-5 mt-4 border-t border-border flex items-center justify-between">
-                <span className="text-[10px] font-semibold text-primary-blue bg-soft-blue px-2 py-0.5 rounded">
-                  {event.budget_range}
-                </span>
+              <div className="pt-5 mt-4 border-t border-border flex items-center justify-between gap-2">
+                <div className="flex items-center space-x-1.5 flex-wrap gap-y-1">
+                  <span className="text-[10px] font-semibold text-primary-blue bg-soft-blue px-2 py-0.5 rounded">
+                    {event.budget_range}
+                  </span>
+                  {event.proposal_path ? (
+                    <a
+                      href={event.proposal_path.startsWith("http") ? event.proposal_path : `http://127.0.0.1:8000/storage/${event.proposal_path}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-[10px] font-semibold text-danger bg-red-50 hover:bg-red-100 border border-red-200/50 px-2 py-0.5 rounded transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <FileText className="w-3 h-3 mr-0.5 flex-shrink-0" />
+                      Deck PDF
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center text-[10px] font-semibold text-muted-ink bg-surface-soft border border-border px-2 py-0.5 rounded">
+                      No Deck
+                    </span>
+                  )}
+                </div>
 
                 <Link
                   to={`/events/${event.id}`}

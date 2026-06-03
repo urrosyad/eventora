@@ -54,8 +54,8 @@ export function TopNavbar() {
           <div className="flex">
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center mr-8">
-              <Link to="/dashboard" className="text-xl font-bold tracking-tight text-primary-blue">
-                Eventora
+              <Link to="/dashboard" className="inline-flex items-center text-xl font-bold tracking-tight text-primary-blue">
+                <img src="/eventoraLogo.png" alt="EVENTORA" className="h-6 w-auto object-contain" />
               </Link>
             </div>
 

@@ -271,9 +271,29 @@ export function SponsorshipDetail() {
               <FileText className="w-4 h-4 mr-2 text-primary-blue" />
               Surat Pengantar (Cover Letter)
             </h3>
-            <p className="text-sm text-muted-ink leading-relaxed whitespace-pre-line bg-surface-soft/40 p-4 rounded-xl border border-border/30">
-              {app.cover_letter}
-            </p>
+            {app.cover_letter && (app.cover_letter.endsWith(".pdf") || app.cover_letter.includes("/storage/") || app.cover_letter.includes("cover_letters/")) ? (
+              <div className="flex items-center justify-between p-4 bg-surface-soft/40 rounded-xl border border-border/30">
+                <div className="flex items-center space-x-3">
+                  <FileText className="w-5 h-5 text-red-500 flex-shrink-0" />
+                  <div>
+                    <span className="text-xs font-bold text-ink block">Surat Pengantar File</span>
+                    <span className="text-[10px] text-muted-ink">Format: PDF / Image Document</span>
+                  </div>
+                </div>
+                <a
+                  href={app.cover_letter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 border border-border text-xs font-bold rounded-xl text-ink bg-white hover:bg-surface-soft transition-colors"
+                >
+                  View File
+                </a>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-ink leading-relaxed whitespace-pre-line bg-surface-soft/40 p-4 rounded-xl border border-border/30">
+                {app.cover_letter || "No cover letter provided."}
+              </p>
+            )}
             {app.additional_message && (
               <div className="space-y-1.5 pt-2">
                 <span className="text-xs font-bold text-ink block">Additional Message:</span>

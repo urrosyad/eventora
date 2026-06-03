@@ -95,13 +95,13 @@ export function Login() {
 
       <div className="max-w-md w-full space-y-8 bg-white border border-border p-8 rounded-2xl shadow-xl relative z-10">
         {/* Brand */}
-        <div className="text-center">
-          <Link to="/" className="text-2xl font-bold tracking-tight text-primary-blue hover:opacity-90">
-            Eventora
+        <div className="text-center flex flex-col items-center justify-center">
+          <Link to="/" className="inline-flex items-center text-2xl font-bold tracking-tight text-primary-blue hover:opacity-90">
+            <img src="/eventoraLogo.png" alt="EVENTORA" className="h-8 w-auto object-contain" />
           </Link>
           <h2 className="mt-6 text-xl font-bold text-ink">Sign in to your account</h2>
           <p className="mt-1 text-sm text-muted-ink">
-            Or{" "}
+            Atau{" "}
             <Link to="/register" className="font-medium text-accent-blue hover:underline">
               create a new account
             </Link>
@@ -164,10 +164,10 @@ export function Login() {
 
         {/* Demo login shortcuts */}
         <div className="border-t border-border pt-6 mt-6 space-y-3">
-          <div className="flex items-center space-x-1.5 justify-center text-xs font-semibold text-muted-ink">
+          <span className="flex items-center space-x-1.5 justify-center text-xs font-semibold text-muted-ink">
             <ShieldCheck className="w-3.5 h-3.5 text-accent-blue" />
-            <span>Developer Demo Accounts</span>
-          </div>
+            <span>Akun Demo Pengembang</span>
+          </span>
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"

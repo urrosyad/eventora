@@ -43,9 +43,15 @@ class LocationService
     public function getProvinces(): array
     {
         try {
-            $response = Http::timeout(3)->get('https://wilayah-indonesia.vercel.app/api/provinces.json');
+            $response = Http::timeout(5)->get('https://wilayah.id/api/provinces.json');
             if ($response->successful()) {
-                return $response->json();
+                $data = $response->json()['data'] ?? [];
+                return array_map(function ($item) {
+                    return [
+                        'id' => $item['code'],
+                        'name' => strtoupper($item['name'])
+                    ];
+                }, $data);
             }
         } catch (\Exception $e) {
             Log::warning('External Location API error: ' . $e->getMessage() . '. Using fallback.');
@@ -57,9 +63,16 @@ class LocationService
     public function getCities(string $provinceId): array
     {
         try {
-            $response = Http::timeout(3)->get("https://wilayah-indonesia.vercel.app/api/regencies/{$provinceId}.json");
+            $response = Http::timeout(5)->get("https://wilayah.id/api/regencies/{$provinceId}.json");
             if ($response->successful()) {
-                return $response->json();
+                $data = $response->json()['data'] ?? [];
+                return array_map(function ($item) use ($provinceId) {
+                    return [
+                        'id' => $item['code'],
+                        'province_id' => $provinceId,
+                        'name' => strtoupper($item['name'])
+                    ];
+                }, $data);
             }
         } catch (\Exception $e) {
             Log::warning('External Location API regencies error: ' . $e->getMessage() . '. Using fallback.');

@@ -19,7 +19,6 @@ import {
 export function Account() {
   const { user, organization, company, updateProfile } = useAuthStore();
   const queryClient = useQueryClient();
-
   const isOrg = user?.role === "organisasi";
   const profileId = isOrg ? organization?.id : company?.id;
 
@@ -27,7 +26,7 @@ export function Account() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [website, setWebsite] = useState("");
+  const [website, setWebsite] = useState(""); 
   const [instagram, setInstagram] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [address, setAddress] = useState("");
@@ -53,7 +52,7 @@ export function Account() {
     "Tempat Acara (Venue)",
   ];
 
-  // Initialize fields
+  // Initialize fields 
   useEffect(() => {
     if (isOrg && organization) {
       setName(organization.name || "");

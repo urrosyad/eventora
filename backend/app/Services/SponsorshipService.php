@@ -60,12 +60,17 @@ class SponsorshipService
             throw ValidationException::withMessages(['company_id' => 'Event ini sudah diajukan ke perusahaan tersebut sebelumnya.']);
         }
 
+        $coverLetterPath = $data['cover_letter'];
+        if ($data['cover_letter'] instanceof \Illuminate\Http\UploadedFile) {
+            $coverLetterPath = $data['cover_letter']->store('cover_letters', 'public');
+        }
+
         $applicationData = [
             'event_id' => $event->id,
             'company_id' => $company->id,
             'organization_id' => $org->id,
             'support_type_requested' => $data['support_type_requested'],
-            'cover_letter' => $data['cover_letter'],
+            'cover_letter' => $coverLetterPath,
             'additional_message' => $data['additional_message'] ?? null,
             'status' => 'pending',
         ];

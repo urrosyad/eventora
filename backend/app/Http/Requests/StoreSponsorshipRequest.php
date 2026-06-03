@@ -17,7 +17,7 @@ class StoreSponsorshipRequest extends FormRequest
             'event_id' => ['required', 'exists:events,id'],
             'company_id' => ['required', 'exists:companies,id'],
             'support_type_requested' => ['required', 'string', 'max:100'],
-            'cover_letter' => ['required', 'string', 'min:50'],
+            'cover_letter' => ['required', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:10240'],
             'additional_message' => ['nullable', 'string'],
         ];
     }
@@ -25,7 +25,10 @@ class StoreSponsorshipRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'cover_letter.min' => 'Surat pengantar minimal 50 karakter.',
+            'cover_letter.required' => 'Surat pengantar wajib diunggah.',
+            'cover_letter.file' => 'Surat pengantar harus berupa file.',
+            'cover_letter.mimes' => 'Surat pengantar harus berformat PDF atau Gambar (JPEG, PNG).',
+            'cover_letter.max' => 'Ukuran surat pengantar maksimal 10MB.',
         ];
     }
 }

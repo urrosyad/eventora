@@ -54,13 +54,15 @@ export function SponsorshipTracking() {
             Monitor proposal application tracking, trace reviewed statuses, and access approved partner contacts.
           </p>
         </div>
-        <Link
-          to="/companies"
-          className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-xl text-white bg-primary-blue hover:bg-primary-blue/90 shadow-sm transition-all"
-        >
-          <Plus className="w-4 h-4 mr-1.5" />
-          Apply to Sponsors
-        </Link>
+        {user?.role === "organisasi" && (
+          <Link
+            to="/companies"
+            className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-xl text-white bg-primary-blue hover:bg-primary-blue/90 shadow-sm transition-all"
+          >
+            <Plus className="w-4 h-4 mr-1.5" />
+            Apply to Sponsors
+          </Link>
+        )}
       </div>
 
       {/* Filter panel */}

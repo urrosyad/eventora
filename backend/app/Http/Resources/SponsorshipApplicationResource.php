@@ -18,7 +18,18 @@ class SponsorshipApplicationResource extends JsonResource
             'organization_id' => $this->organization_id,
             'organization' => new OrganizationResource($this->whenLoaded('organization')),
             'support_type_requested' => $this->support_type_requested,
-            'cover_letter' => $this->cover_letter,
+            'cover_letter' => (function() {
+                $val = $this->cover_letter;
+                if (!$val) return null;
+                if (filter_var($val, FILTER_VALIDATE_URL)) {
+                    return $val;
+                }
+                // Check if it is a file path (contains no spaces, contains a slash or ends with a common file extension)
+                if (strpos($val, ' ') === false && (strpos($val, '/') !== false || preg_match('/\.(pdf|png|jpg|jpeg)$/i', $val))) {
+                    return asset('storage/' . $val);
+                }
+                return $val;
+            })(),
             'additional_message' => $this->additional_message,
             'response_message' => $this->response_message,
             'status' => $this->status,

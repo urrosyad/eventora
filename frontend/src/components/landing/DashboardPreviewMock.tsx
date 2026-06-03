@@ -8,9 +8,8 @@ export function DashboardPreviewMock() {
       <div className="hidden md:flex flex-col w-56 border-r border-border bg-white flex-shrink-0 p-4 justify-between text-left">
         <div className="space-y-6">
           {/* Brand */}
-          <div className="flex items-center space-x-2 px-2">
-            <div className="w-6 h-6 rounded bg-primary-blue flex items-center justify-center text-white text-[10px] font-bold">E</div>
-            <span className="font-bold text-sm text-primary-blue tracking-tight">Eventora</span>
+          <div className="flex items-center px-2">
+            <img src="/eventoraLogo.png" alt="EVENTORA" className="h-5 w-auto object-contain" />
           </div>
 
           {/* Links */}

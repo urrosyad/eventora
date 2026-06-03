@@ -30,6 +30,9 @@ export function EventCreateEdit() {
   const [supportTypesNeeded, setSupportTypesNeeded] = useState<string[]>([]);
   const [proposalFile, setProposalFile] = useState<File | null>(null);
 
+  const [existingProposalUrl, setExistingProposalUrl] = useState<string | null>(null);
+  const [existingProposalName, setExistingProposalName] = useState<string | null>(null);
+
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   // Fetch initial details if in edit mode
@@ -51,6 +54,14 @@ export function EventCreateEdit() {
           setCategory(event.category);
           setBudgetRange(event.budget_range);
           setSupportTypesNeeded(event.support_types_needed || []);
+          
+          if (event.proposal_path) {
+            const resolvedUrl = event.proposal_path.startsWith("http")
+              ? event.proposal_path
+              : `http://127.0.0.1:8000/storage/${event.proposal_path}`;
+            setExistingProposalUrl(resolvedUrl);
+            setExistingProposalName(event.proposal_path.split("/").pop() || "proposal.pdf");
+          }
         } catch (error: any) {
           toast.error("Failed to load event details.");
           navigate("/events");
@@ -77,9 +88,9 @@ export function EventCreateEdit() {
       errors.supportTypesNeeded = "Select at least one required sponsorship support type.";
     }
     
-    // Proposal PDF deck is required when creating a new event
-    if (!isEdit && !proposalFile) {
-      errors.proposalFile = "A sponsorship deck PDF proposal is required for new events.";
+    // Proposal PDF deck is required when creating a new event or if existing proposal was removed
+    if (!proposalFile && (!isEdit || !existingProposalUrl)) {
+      errors.proposalFile = "A sponsorship deck PDF proposal is required.";
     }
 
     setFormErrors(errors);
@@ -132,7 +143,7 @@ export function EventCreateEdit() {
       // 2. Handle proposal PDF upload if a file was selected
       if (proposalFile && eventId) {
         const fileFormData = new FormData();
-        fileFormData.append("proposal_path", proposalFile); // Matches the Laravel storage backend validation key
+        fileFormData.append("proposal", proposalFile); // Matches the Laravel storage backend validation key
         
         await api.post(`/events/${eventId}/proposal`, fileFormData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -420,9 +431,24 @@ export function EventCreateEdit() {
           <FileUpload
             label="Proposal Deck"
             accept="pdf"
-            required={!isEdit}
+            required={!isEdit || !existingProposalUrl}
             error={formErrors.proposalFile}
-            onChange={(file) => setProposalFile(file)}
+            initialFileUrl={existingProposalUrl}
+            initialFileName={existingProposalName}
+            onClearExisting={() => {
+              setExistingProposalUrl(null);
+              setExistingProposalName(null);
+            }}
+            onChange={(file) => {
+              setProposalFile(file);
+              if (file && formErrors.proposalFile) {
+                setFormErrors((prev) => {
+                  const copy = { ...prev };
+                  delete copy.proposalFile;
+                  return copy;
+                });
+              }
+            }}
           />
         </div>
 

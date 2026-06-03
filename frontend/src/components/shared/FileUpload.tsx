@@ -7,6 +7,9 @@ interface FileUploadProps {
   onChange: (file: File | null) => void;
   error?: string;
   required?: boolean;
+  initialFileUrl?: string | null;
+  initialFileName?: string | null;
+  onClearExisting?: () => void;
 }
 
 export function FileUpload({
@@ -15,6 +18,9 @@ export function FileUpload({
   onChange,
   error,
   required = false,
+  initialFileUrl = null,
+  initialFileName = null,
+  onClearExisting,
 }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [sizeError, setSizeError] = useState<string>("");
@@ -39,19 +45,25 @@ export function FileUpload({
         return;
       }
 
-      // Basic type validation fallback
-      if (accept === "pdf" && file.type !== "application/pdf") {
-        setSizeError("Invalid file type. Please upload a PDF.");
-        setSelectedFile(null);
-        onChange(null);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      } else if (accept === "image" && !file.type.startsWith("image/")) {
-        setSizeError("Invalid file type. Please upload a JPG, PNG or WEBP image.");
-        setSelectedFile(null);
-        onChange(null);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
+      // Basic type validation fallback with extension checks
+      if (accept === "pdf") {
+        const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+        if (!isPdf) {
+          setSizeError("Invalid file type. Please upload a PDF.");
+          setSelectedFile(null);
+          onChange(null);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+          return;
+        }
+      } else if (accept === "image") {
+        const isImage = file.type.startsWith("image/") || /\.(jpg|jpeg|png|webp)$/i.test(file.name);
+        if (!isImage) {
+          setSizeError("Invalid file type. Please upload a JPG, PNG or WEBP image.");
+          setSelectedFile(null);
+          onChange(null);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+          return;
+        }
       }
 
       setSelectedFile(file);
@@ -74,21 +86,37 @@ export function FileUpload({
         {label} {required && <span className="text-danger">*</span>}
       </label>
 
-      {selectedFile ? (
-        // File selected preview
+      {selectedFile || initialFileUrl ? (
+        // File selected or existing file preview
         <div className="flex items-center justify-between p-3 border border-border bg-surface-soft/60 rounded-xl">
           <div className="flex items-center space-x-3 overflow-hidden">
             <File className="w-5 h-5 text-accent-blue flex-shrink-0" />
-            <div className="truncate">
-              <p className="text-sm font-medium text-ink truncate">{selectedFile.name}</p>
-              <p className="text-xs text-muted-ink">
-                {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
-              </p>
+            <div className="truncate text-left">
+              {selectedFile ? (
+                <>
+                  <p className="text-sm font-medium text-ink truncate">{selectedFile.name}</p>
+                  <p className="text-xs text-muted-ink">
+                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm font-medium text-ink truncate">{initialFileName || "proposal.pdf"}</p>
+                  <a
+                    href={initialFileUrl || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-accent-blue hover:underline inline-flex items-center font-semibold"
+                  >
+                    View uploaded file
+                  </a>
+                </>
+              )}
             </div>
           </div>
           <button
             type="button"
-            onClick={handleClear}
+            onClick={selectedFile ? handleClear : onClearExisting}
             className="p-1 text-muted-ink hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
           >
             <X className="w-4 h-4" />

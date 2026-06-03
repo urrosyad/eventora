@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/authStore";
 import { toast } from "sonner";
 import { LoadingState } from "@/components/shared/LoadingState";
+import { FileUpload } from "@/components/shared/FileUpload";
 import { ApiResponse, Company, Bookmark, EventModel } from "@/types";
 import {
   ArrowLeft,
@@ -34,7 +35,7 @@ export function CompanyDetail() {
   // Apply Form States
   const [selectedEventId, setSelectedEventId] = useState("");
   const [supportRequested, setSupportRequested] = useState("");
-  const [coverLetter, setCoverLetter] = useState("");
+  const [coverLetterFile, setCoverLetterFile] = useState<File | null>(null);
   const [additionalMessage, setAdditionalMessage] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,8 +101,8 @@ export function CompanyDetail() {
 
     if (!selectedEventId) errors.selectedEventId = "Please select an event.";
     if (!supportRequested) errors.supportRequested = "Please select requested support type.";
-    if (!coverLetter.trim() || coverLetter.length < 50) {
-      errors.coverLetter = "Cover letter must be at least 50 characters long.";
+    if (!coverLetterFile) {
+      errors.coverLetter = "Surat pengantar wajib diunggah.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -112,12 +113,21 @@ export function CompanyDetail() {
 
     setIsSubmitting(true);
     try {
-      await api.post("/sponsorships", {
-        event_id: Number(selectedEventId),
-        company_id: company?.id,
-        support_type_requested: supportRequested,
-        cover_letter: coverLetter,
-        additional_message: additionalMessage,
+      const formData = new FormData();
+      formData.append("event_id", selectedEventId);
+      formData.append("company_id", company?.id ? String(company.id) : "");
+      formData.append("support_type_requested", supportRequested);
+      if (coverLetterFile) {
+        formData.append("cover_letter", coverLetterFile);
+      }
+      if (additionalMessage) {
+        formData.append("additional_message", additionalMessage);
+      }
+
+      await api.post("/sponsorships", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       toast.success("Sponsorship application submitted successfully!");
@@ -264,30 +274,22 @@ export function CompanyDetail() {
             </div>
 
             {/* Custom Cover letter */}
-            <div>
-              <label className="block text-sm font-medium text-ink mb-1.5">
-                Surat Pengantar (Cover Letter) <span className="text-danger">*</span>
-              </label>
-              <textarea
-                value={coverLetter}
-                onChange={(e) => setCoverLetter(e.target.value)}
-                rows={5}
-                placeholder="Explain why this corporate sponsor should fund your event. Align your demographics with their commercial preferences (Minimum 50 characters required)..."
-                className={`w-full px-3 py-2 text-sm bg-white border rounded-xl shadow-sm focus:outline-none focus:ring-1 focus:ring-accent-blue placeholder:text-silver resize-none ${
-                  formErrors.coverLetter ? "border-danger text-danger focus:ring-danger" : "border-border text-ink"
-                }`}
-              />
-              <div className="flex justify-between items-center mt-1">
-                {formErrors.coverLetter ? (
-                  <p className="text-xs text-danger font-medium">{formErrors.coverLetter}</p>
-                ) : (
-                  <span className="text-[10px] text-muted-ink">Keep your intro formal and concise.</span>
-                )}
-                <span className={`text-[10px] font-bold ${coverLetter.length < 50 ? "text-danger" : "text-success"}`}>
-                  {coverLetter.length} / 50 characters minimum
-                </span>
-              </div>
-            </div>
+            <FileUpload
+              label="Surat Pengantar (Cover Letter)"
+              accept="pdf"
+              required={true}
+              error={formErrors.coverLetter}
+              onChange={(file) => {
+                setCoverLetterFile(file);
+                if (file && formErrors.coverLetter) {
+                  setFormErrors((prev) => {
+                    const copy = { ...prev };
+                    delete copy.coverLetter;
+                    return copy;
+                  });
+                }
+              }}
+            />
 
             {/* Additional Message */}
             <div>

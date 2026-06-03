@@ -215,9 +215,29 @@ export function AdminSponsorshipMonitoring() {
                 <h4 className="font-bold text-ink uppercase tracking-wider text-xs mb-2 flex items-center">
                   <FileText className="w-3.5 h-3.5 mr-1 text-silver" /> Cover Letter (Surat Pengantar)
                 </h4>
-                <p className="text-muted-ink leading-relaxed bg-[#F7F8FA] p-4 rounded-xl border border-border whitespace-pre-line text-xs">
-                  {selectedApplication.cover_letter || "No cover letter provided."}
-                </p>
+                {selectedApplication.cover_letter && (selectedApplication.cover_letter.endsWith(".pdf") || selectedApplication.cover_letter.includes("/storage/") || selectedApplication.cover_letter.includes("cover_letters/")) ? (
+                  <div className="flex items-center justify-between p-4 bg-[#F7F8FA] rounded-xl border border-border">
+                    <div className="flex items-center space-x-3">
+                      <FileText className="w-5 h-5 text-red-500 flex-shrink-0" />
+                      <div>
+                        <span className="text-xs font-bold text-ink block">Surat Pengantar File</span>
+                        <span className="text-[10px] text-muted-ink">Format: PDF / Image Document</span>
+                      </div>
+                    </div>
+                    <a
+                      href={selectedApplication.cover_letter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 border border-border text-xs font-bold rounded-xl text-ink bg-white hover:bg-surface-soft transition-colors"
+                    >
+                      View File
+                    </a>
+                  </div>
+                ) : (
+                  <p className="text-muted-ink leading-relaxed bg-[#F7F8FA] p-4 rounded-xl border border-border whitespace-pre-line text-xs">
+                    {selectedApplication.cover_letter || "No cover letter provided."}
+                  </p>
+                )}
               </div>
 
               {/* Additional message / feedback */}

@@ -50,7 +50,6 @@ export function OrganizerDashboard() {
 
   const events = eventsRes?.data || [];
   const sponsorships = sponsorshipsRes?.data || [];
-
   const isLoading = isLoadingEvents || isLoadingSponsorships;
 
   // Aggregate stats on frontend (extremely robust fallback adapter)

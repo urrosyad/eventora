@@ -5,7 +5,6 @@ import { SponsorshipFlowAnimation } from "@/components/landing/SponsorshipFlowAn
 import { TestimonialMarquee } from "@/components/landing/TestimonialMarquee";
 import { PartnerSlider } from "@/components/landing/PartnerSlider";
 import { DashboardPreviewMock } from "@/components/landing/DashboardPreviewMock";
-import { LandingLayout } from "@/components/layout/LandingLayout";
 import {
   FileText,
   Compass,
@@ -42,7 +41,7 @@ export function LandingPage() {
   }, [location]);
 
   return (
-    <LandingLayout>
+    <>
       {/* 1. HERO SECTION */}
       <section id="hero" className="relative overflow-hidden bg-white py-20 md:py-32 grid-bg">
         {/* Subtle radial glow background overlay */}
@@ -349,6 +348,6 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-    </LandingLayout>
+    </>
   );
 }

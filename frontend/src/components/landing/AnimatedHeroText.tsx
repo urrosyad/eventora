@@ -13,7 +13,7 @@ export function AnimatedHeroText() {
   }, []);
 
   return (
-    <span className="inline-grid grid-cols-1 grid-rows-1 text-center align-bottom">
+    <span className="inline-grid grid-cols-1 grid-rows-1 text-center align-baseline">
       <AnimatePresence>
         <motion.span
           key={words[index]}

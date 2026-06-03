@@ -36,7 +36,6 @@ export function AdminCompanies() {
       const params: Record<string, any> = {};
       if (search) params.search = search;
       if (industryFilter !== "all") params.industry = industryFilter;
-
       const res = await api.get<ApiResponse<Company[]>>("/companies", { params });
       return res.data;
     },
